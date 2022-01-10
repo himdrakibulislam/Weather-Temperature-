@@ -1,9 +1,16 @@
+// setInnerText function
+const setInnerText = (id,setText) =>{
+    document.getElementById(id).innerText = setText;
+}
+const getElements = (id) =>{
+    return document.getElementById(id);
+}
 const searchCity = () =>{
     // get input value
-    const searchCityField = document.getElementById('search-city');
+    const searchCityField = getElements('search-city');
     const searchCityText = searchCityField.value ;
     // emty message
-    const emtyMessage = document.getElementById('emty-text');
+    const emtyMessage = getElements('emty-text');
     if(searchCityText == ""){
         emtyMessage.innerText = "PLEASE WRITE SOMETHING";
     }else{
@@ -11,7 +18,7 @@ const searchCity = () =>{
         emtyMessage.innerText = '';
         searchCityField.value = '';
         // get data
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchCityText}&appid=62c31dfae041a945a2e30e4f1d7e2e62`;
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchCityText}&appid=62c31dfae041a945a2e30e4f1d7e2e62&units=metric`;
         fetch(url)
         .then(res => res.json())
         .then(data => displayData(data))
@@ -20,18 +27,15 @@ const searchCity = () =>{
 }
 const displayData =(data) =>{
     // city name
-    const cityName = document.getElementById('city-name');
-    cityName.innerText = data.name;
+    setInnerText('city-name',data.name);
     // country name
-    const country = document.getElementById('country');
-    country.innerText = data.sys.country;
+    setInnerText('country',data.sys.country);
     // temperature
-    const kelvin = data.main.temp;
-    const celsius = kelvin - 273.15;
-    const celsiusText = document.getElementById('celsius');
-    celsiusText.innerText = celsius.toFixed(2);
+    setInnerText('celsius',data.main.temp);
     // main
-    const main = document.getElementById('main');
-    main.innerText = data.weather[0].main;
-  
+    setInnerText('main',data.weather[0].main);  
+    // set url
+    const url = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+    const imgIcon = getElements('weather-icon');
+    imgIcon.setAttribute('src',url);
 }
